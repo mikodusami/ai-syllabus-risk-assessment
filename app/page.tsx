@@ -1,3 +1,5 @@
+import UploadForm from "@/components/UploadForm";
+
 export default function Page() {
   return (
     <main style={_styles.page_container}>
@@ -6,7 +8,7 @@ export default function Page() {
         upload your course syllabus and receive an analysis of assignments and
         assessments that may be vulnerable to generative AI misuse.
       </p>
-
+      <UploadForm />
       <footer></footer>
     </main>
   );
