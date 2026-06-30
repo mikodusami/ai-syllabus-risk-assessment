@@ -20,12 +20,3 @@ export interface UploadResponse {
   error?: string;
   debug?: DebugInfo;
 }
-
-// const riskLevelRangeDefinition = [
-//   (0, "<some-meaning>"),
-//   (20, "<some-meaning>"),
-//   (40, "<some-meaning>"),
-//   (60, "<some-meaning>"),
-//   (80, "<some-meaning>"),
-//   (100, "<some-meaning>"),
-// ];
