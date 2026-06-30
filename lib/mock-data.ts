@@ -9,7 +9,7 @@ export const mockAnalysisLowRisk: AnalysisResult = {
       title: "Outdated screenshot in Module 2",
       description:
         "The walkthrough screenshot shows a previous version of the chat interface that no longer matches the current UI.",
-      risk: "Low — learners may be briefly confused, but the surrounding instructions still apply.",
+      risk: "Low - learners may be briefly confused, but the surrounding instructions still apply.",
       recommendation:
         "Swap in an updated screenshot during the next content pass.",
     },
