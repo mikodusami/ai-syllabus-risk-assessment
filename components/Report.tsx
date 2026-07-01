@@ -11,7 +11,7 @@ type RiskRange = [
   threshold: number,
   meaning: string,
   color: string,
-  severity: "low" | "medium" | "high",
+  severity: "Low" | "Medium" | "High",
 ];
 
 const riskLevelRangeDefinition: RiskRange[] = [
@@ -38,7 +38,7 @@ function getRiskLevelRange(riskLevel: number): RiskRange {
     }
   }
 
-  return closest ?? [-1, "Risk level unknown", "#999999", "low"];
+  return closest ?? [-1, "Risk level unknown", "#999999", "Low"];
 }
 
 export default function Report({ data }: ReportProps) {
