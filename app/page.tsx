@@ -3,7 +3,7 @@ import UploadForm from "@/components/UploadForm";
 export default function Page() {
   return (
     <main style={_styles.page_container}>
-      <h1>syllabi risk assessment</h1>
+      <h1>syllabus risk assessment</h1>
       <p className="body">
         upload your course syllabus and receive an analysis of assignments and
         assessments that may be vulnerable to generative AI misuse.
