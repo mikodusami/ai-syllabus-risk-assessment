@@ -1,0 +1,14 @@
+Syllabus — Introducción a la Programación
+Año: 2025 • Semestre: Otoño
+
+Profesor: María García-López
+Horario: Lunes y Miércoles, 10:00–11:30
+
+Descripción del curso:
+Este curso cubre los fundamentos de la programación. Los estudiantes aprenderán
+sobre variables, bucles, funciones y estructuras de datos básicas.
+
+特殊文字テスト: 日本語テキスト
+Ñoño café résumé naïve über Straße
+
+Emoji test: 📚 🎓 ✅ ❌
