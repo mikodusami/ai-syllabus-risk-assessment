@@ -16,7 +16,7 @@ function loadFixture(filename: string): Buffer {
 
 describe("extractPlainText", () => {
   it("extracts content from a basic text file", () => {
-    const buffer = loadFixture("sample.txt");
+    const buffer = loadFixture("02-cs101-intro-plain-text.txt");
     const text = extractPlainText(buffer);
     expect(text).toContain("CS 101");
     expect(text).toContain("Introduction to Computer Science");
@@ -24,7 +24,7 @@ describe("extractPlainText", () => {
   });
 
   it("extracts content from a markdown file", () => {
-    const buffer = loadFixture("sample.md");
+    const buffer = loadFixture("04-creative-writing-short-syllabus.md");
     const text = extractPlainText(buffer);
     expect(text).toContain("ENG 200");
     expect(text).toContain("Creative Writing");
@@ -32,7 +32,7 @@ describe("extractPlainText", () => {
   });
 
   it("handles unicode characters correctly", () => {
-    const buffer = loadFixture("unicode.txt");
+    const buffer = loadFixture("03-unicode-multilingual-syllabus.txt");
     const text = extractPlainText(buffer);
     expect(text).toContain("Introducción");
     expect(text).toContain("María García-López");
@@ -42,22 +42,22 @@ describe("extractPlainText", () => {
   });
 
   it("returns empty string for empty file", () => {
-    const buffer = loadFixture("empty.txt");
+    const buffer = loadFixture("01-empty-file.txt");
     const text = extractPlainText(buffer);
     expect(text).toBe("");
   });
 
   it("preserves newlines and whitespace", () => {
-    const buffer = loadFixture("sample.txt");
+    const buffer = loadFixture("02-cs101-intro-plain-text.txt");
     const text = extractPlainText(buffer);
     expect(text).toContain("\n");
   });
 });
 
 describe("extractPdfText", () => {
-  describe("simple.pdf - basic multi-page PDF with Latin text", () => {
+  describe("11-multipage-latin-text.pdf - basic multi-page PDF with Latin text", () => {
     it("extracts expected content from all pages", async () => {
-      const buffer = loadFixture("simple.pdf");
+      const buffer = loadFixture("11-multipage-latin-text.pdf");
       const text = await extractPdfText(buffer);
 
       // Title and purpose
@@ -96,9 +96,9 @@ describe("extractPdfText", () => {
     });
   });
 
-  describe("spaces-in-name.pdf - chemistry syllabus with grading tables", () => {
+  describe("13-chemistry-grading-tables.pdf - chemistry syllabus with grading tables", () => {
     it("extracts expected content from VT chemistry syllabus", async () => {
-      const buffer = loadFixture("spaces-in-name.pdf");
+      const buffer = loadFixture("13-chemistry-grading-tables.pdf");
       const text = await extractPdfText(buffer);
 
       // Exam policy
@@ -177,9 +177,9 @@ describe("extractPdfText", () => {
     });
   });
 
-  describe("styled-tables.pdf - SJSU stretch English syllabus with tables", () => {
+  describe("14-english-styled-tables.pdf - SJSU stretch English syllabus with tables", () => {
     it("extracts expected content from SJSU ENGL 1AF syllabus", async () => {
-      const buffer = loadFixture("styled-tables.pdf");
+      const buffer = loadFixture("14-english-styled-tables.pdf");
       const text = await extractPdfText(buffer);
 
       // Contact info
@@ -238,9 +238,9 @@ describe("extractPdfText", () => {
     });
   });
 
-  describe("tables-and-images.pdf - UW English 110 with complex formatting", () => {
+  describe("15-english-complex-formatting.pdf - UW English 110 with complex formatting", () => {
     it("extracts expected content from UW ENGLISH 110 syllabus", async () => {
-      const buffer = loadFixture("tables-and-images.pdf");
+      const buffer = loadFixture("15-english-complex-formatting.pdf");
       const text = await extractPdfText(buffer);
 
       // Header info
@@ -310,9 +310,9 @@ describe("extractPdfText", () => {
     });
   });
 
-  describe("standard-syllabus.pdf - UNM sample syllabus template", () => {
+  describe("16-unm-syllabus-template.pdf - UNM sample syllabus template", () => {
     it("extracts expected content from UNM syllabus template", async () => {
-      const buffer = loadFixture("standard-syllabus.pdf");
+      const buffer = loadFixture("16-unm-syllabus-template.pdf");
       const text = await extractPdfText(buffer);
 
       // Header
@@ -372,20 +372,20 @@ describe("extractPdfText", () => {
   });
 
   describe("remaining PDF fixtures", () => {
-    it("extracts text from minimal.pdf", async () => {
-      const buffer = loadFixture("minimal.pdf");
+    it("extracts text from 12-minimal-pdf.pdf", async () => {
+      const buffer = loadFixture("12-minimal-pdf.pdf");
       const text = await extractPdfText(buffer);
       expect(text.length).toBeGreaterThan(0);
     });
 
-    it("extracts text from images-tables-formatting.pdf", async () => {
-      const buffer = loadFixture("images-tables-formatting.pdf");
+    it("extracts text from 17-images-tables-mixed-formatting.pdf", async () => {
+      const buffer = loadFixture("17-images-tables-mixed-formatting.pdf");
       const text = await extractPdfText(buffer);
       expect(text.length).toBeGreaterThan(0);
     });
 
-    it("extracts text from complex-layout.pdf", async () => {
-      const buffer = loadFixture("complex-layout.pdf");
+    it("extracts text from 18-complex-multi-column-layout.pdf", async () => {
+      const buffer = loadFixture("18-complex-multi-column-layout.pdf");
       const text = await extractPdfText(buffer);
       expect(text.length).toBeGreaterThan(0);
     });
@@ -410,23 +410,23 @@ describe("extractPdfText", () => {
 });
 
 describe("extractDocxText", () => {
-  describe("standard-syllabus.docx - HUM 1020 face-to-face syllabus", () => {
+  describe("19-humanities-face-to-face-syllabus.docx - HUM 1020 face-to-face syllabus", () => {
     it("extracts substantial text content", async () => {
-      const buffer = loadFixture("standard-syllabus.docx");
+      const buffer = loadFixture("19-humanities-face-to-face-syllabus.docx");
       const text = await extractDocxText(buffer);
       expect(text.length).toBeGreaterThan(500);
     });
 
     it("extracts course-related content", async () => {
-      const buffer = loadFixture("standard-syllabus.docx");
+      const buffer = loadFixture("19-humanities-face-to-face-syllabus.docx");
       const text = await extractDocxText(buffer);
       expect(text.length).toBeGreaterThan(0);
     });
   });
 
-  describe("programming-syllabus.docx - Intro to Python syllabus", () => {
+  describe("20-intro-to-python-programming.docx - Intro to Python syllabus", () => {
     it("extracts all expected content from VT Python course syllabus", async () => {
-      const buffer = loadFixture("programming-syllabus.docx");
+      const buffer = loadFixture("20-intro-to-python-programming.docx");
       const text = await extractDocxText(buffer);
 
       // Course title and term
@@ -536,7 +536,7 @@ describe("extractDocxText", () => {
     });
 
     it("throws on a PDF buffer passed as DOCX", async () => {
-      const buffer = loadFixture("simple.pdf");
+      const buffer = loadFixture("11-multipage-latin-text.pdf");
       await expect(extractDocxText(buffer)).rejects.toThrow();
     });
   });
@@ -544,13 +544,13 @@ describe("extractDocxText", () => {
 
 describe("extractTextFromBuffer", () => {
   it("routes .txt files to plain text extractor", async () => {
-    const buffer = loadFixture("sample.txt");
+    const buffer = loadFixture("02-cs101-intro-plain-text.txt");
     const text = await extractTextFromBuffer(buffer, "text/plain", "file.txt");
     expect(text).toContain("CS 101");
   });
 
   it("routes .md files to plain text extractor", async () => {
-    const buffer = loadFixture("sample.md");
+    const buffer = loadFixture("04-creative-writing-short-syllabus.md");
     const text = await extractTextFromBuffer(
       buffer,
       "text/markdown",
@@ -560,7 +560,7 @@ describe("extractTextFromBuffer", () => {
   });
 
   it("routes .pdf files to PDF extractor", async () => {
-    const buffer = loadFixture("simple.pdf");
+    const buffer = loadFixture("11-multipage-latin-text.pdf");
     const text = await extractTextFromBuffer(
       buffer,
       "application/pdf",
@@ -570,7 +570,7 @@ describe("extractTextFromBuffer", () => {
   });
 
   it("routes .docx files to DOCX extractor", async () => {
-    const buffer = loadFixture("programming-syllabus.docx");
+    const buffer = loadFixture("20-intro-to-python-programming.docx");
     const text = await extractTextFromBuffer(
       buffer,
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -580,7 +580,7 @@ describe("extractTextFromBuffer", () => {
   });
 
   it("routes by extension when mime type is empty", async () => {
-    const buffer = loadFixture("sample.txt");
+    const buffer = loadFixture("02-cs101-intro-plain-text.txt");
     const text = await extractTextFromBuffer(buffer, "", "notes.txt");
     expect(text).toContain("CS 101");
   });
