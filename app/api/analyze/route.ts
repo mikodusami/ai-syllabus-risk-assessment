@@ -77,11 +77,11 @@ export async function POST(
     }
 
     // If direct strategy but text exceeds limit, reject with helpful message
-    if (strategy === "direct" && tokens > PRIMARY_MODEL_TOKEN_LIMIT) {
+    if (strategy === "direct" && tokens > MODEL_TOKEN_LIMIT_NON_STREAMING) {
       return NextResponse.json(
         {
           success: false,
-          error: `Text exceeds ${PRIMARY_MODEL_TOKEN_LIMIT.toLocaleString()} token limit (estimated ${tokens.toLocaleString()} tokens). Please use "chunked" or "summarize" strategy.`,
+          error: `Text exceeds ${MODEL_TOKEN_LIMIT_NON_STREAMING.toLocaleString()} token limit (estimated ${tokens.toLocaleString()} tokens). Please use "chunked" or "summarize" strategy.`,
         },
         { status: 400 },
       );
