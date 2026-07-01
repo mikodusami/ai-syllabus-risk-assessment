@@ -28,9 +28,9 @@ export const ALLOWED_MIME_TYPES = [
  */
 export function isAllowedFileType(mimeType: string, fileName: string): boolean {
   return (
-    ALLOWED_MIME_TYPES.includes(mimeType) ||
-    fileName.endsWith(".txt") ||
-    fileName.endsWith(".md")
+    isPlainTextFile(mimeType, fileName) ||
+    isPdfFile(mimeType, fileName) ||
+    isDocxFile(mimeType, fileName)
   );
 }
 
