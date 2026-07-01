@@ -55,6 +55,5 @@ export interface AppConfig {
   defaultModel: string;
   tokenLimits: {
     nonStreaming: number;
-    maxFallback: number;
   };
 }
