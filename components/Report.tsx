@@ -15,7 +15,7 @@ type RiskRange = [
 ];
 
 const riskLevelRangeDefinition: RiskRange[] = [
-  [0, "Minimal risk - no notable concerns identified", "#007700", "Low"],
+  [0, "No risk - no notable concerns identified", "#007700", "Low"],
   [20, "Low risk - minor items worth noting", "#4d9900", "Low"],
   [40, "Moderate risk - some issues should be reviewed", "#cc9900", "Medium"],
   [60, "Elevated risk - multiple issues need attention", "#cc7700", "Medium"],
@@ -45,7 +45,7 @@ export default function Report({ data }: ReportProps) {
   const riskRange = getRiskLevelRange(data.riskLevel);
   const riskColor = riskRange[2];
   const riskMessage = riskRange[1];
-  const riskLevel = riskRange[riskLevelRangeDefinition[0].length - 1];
+  const riskSeverity = riskRange[3];
 
   return (
     <div style={_styles.container}>
@@ -58,10 +58,10 @@ export default function Report({ data }: ReportProps) {
         <p>
           <strong>Overall Risk Level:</strong>{" "}
           <span style={{ ..._styles.riskValue, color: riskColor }}>
-            {riskLevel}
-            {": "} {riskMessage}
+            {data.riskLevel}/100 — {riskSeverity}
           </span>
         </p>
+        <p style={{ color: riskColor }}>{riskMessage}</p>
       </div>
 
       <h3 style={_styles.sectionTitle}>Issues Found ({data.issues.length})</h3>

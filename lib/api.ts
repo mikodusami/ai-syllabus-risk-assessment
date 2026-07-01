@@ -21,7 +21,7 @@ For each issue you find, explain:
 Respond with a JSON object in this exact format:
 {
   "course": "Course name extracted from syllabus",
-  "riskLevel": "Low" | "Medium" | "High",
+  "riskLevel": <number 0-100>,
   "issues": [
     {
       "title": "Short, clear title",
@@ -32,6 +32,13 @@ Respond with a JSON object in this exact format:
   ],
   "summary": "3-4 sentences: overall findings, what's already working, and the most important change to make"
 }
+
+riskLevel scoring guide (0-100):
+- 0-19: Minimal risk. Assessments are primarily proctored, in-person, or use formats inherently resistant to AI.
+- 20-39: Low risk. Most assessments are AI-resistant with only minor vulnerabilities.
+- 40-59: Moderate risk. A mix of AI-vulnerable and AI-resistant assessments; some changes recommended.
+- 60-79: Elevated risk. Multiple major assessments are vulnerable to AI misuse without detection.
+- 80-100: Critical risk. Most or all assessments can be completed with AI, with little to no safeguards in place.
 
 Respond ONLY with valid JSON. No markdown, no code fences, no extra text.
 `;
@@ -78,7 +85,7 @@ Your job is to deduplicate, merge, and produce a final cohesive analysis.
 Respond with a JSON object in this exact format:
 {
   "course": "Course name (infer from context or use 'Unknown Course')",
-  "riskLevel": "Low" | "Medium" | "High",
+  "riskLevel": <number 0-100>,
   "issues": [
     {
       "title": "Short, clear title",
@@ -89,6 +96,13 @@ Respond with a JSON object in this exact format:
   ],
   "summary": "3-4 sentences: overall findings, what's already working, and the most important change to make"
 }
+
+riskLevel scoring guide (0-100):
+- 0-19: Minimal risk. Assessments are primarily proctored, in-person, or use formats inherently resistant to AI.
+- 20-39: Low risk. Most assessments are AI-resistant with only minor vulnerabilities.
+- 40-59: Moderate risk. A mix of AI-vulnerable and AI-resistant assessments; some changes recommended.
+- 60-79: Elevated risk. Multiple major assessments are vulnerable to AI misuse without detection.
+- 80-100: Critical risk. Most or all assessments can be completed with AI, with little to no safeguards in place.
 
 Respond ONLY with valid JSON. No markdown, no code fences, no extra text.
 `;
