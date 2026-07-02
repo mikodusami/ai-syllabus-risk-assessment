@@ -40,6 +40,10 @@ riskLevel scoring guide (0-100):
 - 60-79: Elevated risk. Multiple major assessments are vulnerable to AI misuse without detection.
 - 80-100: Critical risk. Most or all assessments can be completed with AI, with little to no safeguards in place.
 
+Specific rules to always check:
+1. If the syllabus includes unproctored take-home quizzes or exams, flag them. Recommend replacing with in-person, proctored alternatives if they are meant to demonstrate learning.
+2. If presentations are assigned, check whether substantial Q&A time is included. If not, flag that presenters may just be regurgitating AI-generated content without internalizing the material.
+
 Respond ONLY with valid JSON. No markdown, no code fences, no extra text.
 `;
 
