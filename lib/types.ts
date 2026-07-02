@@ -1,6 +1,5 @@
 export interface AnalysisResult {
   course: string;
-  riskLevel: number; // changing this to a number, on a scale of 1-100 then will translate this into low / medium / high risk level or some other code, definitions of numbers will need to be handled, I believe if we do the number scale, it could be more accurate but we need to define this scale.
   issues: RiskIssue[];
   summary: string;
 }
@@ -31,10 +30,10 @@ export interface DebugInfo {
   rawAiResponse?: string;
   extractionTimeMs?: number;
   apiCallTimeMs?: number;
-  strategy?: AnalysisStrategy;
-  chunksProcessed?: number;
 }
 
+// Chunked and summarize strategies are dormant — all requests use direct analysis now.
+// Keeping the type for reference in case these strategies are revisited.
 export type AnalysisStrategy = "direct" | "chunked" | "summarize";
 
 export interface PreviewResponse {

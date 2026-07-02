@@ -6,7 +6,7 @@ import {
   extractTextFromBuffer,
   validateExtractedText,
   estimateTokens,
-  MODEL_TOKEN_LIMIT_NON_STREAMING,
+  DIRECT_ANALYSIS_TOKEN_THRESHOLD,
 } from "@/lib/extract";
 
 export async function POST(
@@ -59,8 +59,8 @@ export async function POST(
       fileSize: file.size,
       extractedChars: text.length,
       estimatedTokens: tokens,
-      exceedsLimit: tokens > MODEL_TOKEN_LIMIT_NON_STREAMING,
-      tokenLimit: MODEL_TOKEN_LIMIT_NON_STREAMING,
+      exceedsLimit: tokens > DIRECT_ANALYSIS_TOKEN_THRESHOLD,
+      tokenLimit: DIRECT_ANALYSIS_TOKEN_THRESHOLD,
       extractedText: text,
     });
   } catch (error) {

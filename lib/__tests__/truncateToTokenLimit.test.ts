@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 import {
   truncateToTokenLimit,
-  MODEL_TOKEN_LIMIT_NON_STREAMING,
+  DIRECT_ANALYSIS_TOKEN_THRESHOLD,
   CHARS_PER_TOKEN,
 } from "@/lib/extract";
 
-const MAX_CHARS = MODEL_TOKEN_LIMIT_NON_STREAMING * CHARS_PER_TOKEN;
+const MAX_CHARS = DIRECT_ANALYSIS_TOKEN_THRESHOLD * CHARS_PER_TOKEN;
 
 describe("truncateToTokenLimit", () => {
   describe("returns text unchanged when within limit", () => {
@@ -62,8 +62,8 @@ describe("truncateToTokenLimit", () => {
   });
 
   describe("edge cases", () => {
-    it("confirms MODEL_TOKEN_LIMIT_NON_STREAMING is 8000", () => {
-      expect(MODEL_TOKEN_LIMIT_NON_STREAMING).toBe(8000);
+    it("confirms DIRECT_ANALYSIS_TOKEN_THRESHOLD is 8000", () => {
+      expect(DIRECT_ANALYSIS_TOKEN_THRESHOLD).toBe(8000);
     });
 
     it("confirms MAX_CHARS is 32000 (8000 * 4)", () => {

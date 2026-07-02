@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeDirect, analyzeChunked, analyzeSummarize } from "@/lib/api";
-import type {
-  UploadResponse,
-  AnalysisResult,
-  AnalysisStrategy,
-} from "@/lib/types";
+import { analyzeDirect } from "@/lib/api";
+import type { UploadResponse, AnalysisResult } from "@/lib/types";
 import {
   isAllowedFileType,
   isWithinSizeLimit,
@@ -12,10 +8,14 @@ import {
   validateExtractedText,
   estimateTokens,
   extractJson,
-  MODEL_TOKEN_LIMIT_NON_STREAMING,
 } from "@/lib/extract";
 
 const isDev = process.env.NEXT_PUBLIC_APP_MODE === "development";
+
+// All analysis uses direct mode — the full syllabus is sent in a single API call.
+// Chunked and summarize strategies are dormant (see lib/api.ts for rationale).
+// There is no artificial input token cap. The models accept large inputs; the 8,000
+// token limit documented by VT ARC applies to the *output* response, not the input.
 
 export async function POST(
   request: NextRequest,
@@ -26,7 +26,7 @@ export async function POST(
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
     const modelOverride = formData.get("model") as string | null;
-    const strategy = (formData.get("strategy") as AnalysisStrategy) || "direct";
+
     if (!file) {
       return NextResponse.json(
         { success: false, error: "No file provided" },
@@ -73,43 +73,11 @@ export async function POST(
       console.log(
         `[Analyze] Extracted: ${text.length} chars, ~${tokens} tokens`,
       );
-      console.log(`[Analyze] Strategy: ${strategy}, Model: ${model}`);
-    }
-
-    // If direct strategy but text exceeds limit, reject with helpful message
-    if (strategy === "direct" && tokens > MODEL_TOKEN_LIMIT_NON_STREAMING) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: `Text exceeds ${MODEL_TOKEN_LIMIT_NON_STREAMING.toLocaleString()} token limit (estimated ${tokens.toLocaleString()} tokens). Please use "chunked" or "summarize" strategy.`,
-        },
-        { status: 400 },
-      );
+      console.log(`[Analyze] Model: ${model}`);
     }
 
     const apiCallStart = Date.now();
-    let rawResponse: string;
-    let chunksProcessed: number | undefined;
-
-    switch (strategy) {
-      case "chunked": {
-        const result = await analyzeChunked(text, model || undefined);
-        rawResponse = result.rawResponse;
-        chunksProcessed = result.chunksProcessed;
-        break;
-      }
-      case "summarize": {
-        const result = await analyzeSummarize(text, model || undefined);
-        rawResponse = result.rawResponse;
-        chunksProcessed = result.chunksProcessed;
-        break;
-      }
-      default: {
-        rawResponse = await analyzeDirect(text, model || undefined);
-        break;
-      }
-    }
-
+    const rawResponse = await analyzeDirect(text, model || undefined);
     const apiCallTimeMs = Date.now() - apiCallStart;
 
     const jsonStr = extractJson(rawResponse);
@@ -131,8 +99,6 @@ export async function POST(
         durationMs: duration,
         extractionTimeMs,
         apiCallTimeMs,
-        strategy,
-        chunksProcessed,
         extractedText: text,
         rawAiResponse: rawResponse,
       },

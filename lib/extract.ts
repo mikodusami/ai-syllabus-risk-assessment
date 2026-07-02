@@ -5,7 +5,9 @@ import mammoth from "mammoth";
 export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 export const MIN_TEXT_LENGTH = 50; // A sanity check. If we extracted fewer than 50 characters, something went wrong — either the PDF had no selectable text (scanned image with no OCR), the file was corrupt, or it's not actually a syllabus. 50 chars is roughly one short sentence. Below that, there's nothing meaningful to analyze.
 export const CHARS_PER_TOKEN = 4; // A rough industry approximation for English text. OpenAI's tokenizer averages ~4 characters per token for English prose. It's not exact (code and URLs tokenize differently), but it's close enough for estimating whether you'll hit a limit. We use it to convert character counts into estimated token counts without needing an actual tokenizer library.
-export const MODEL_TOKEN_LIMIT_NON_STREAMING = 8000; // the token limit for all models that we can send at once.
+// DORMANT — No longer used. There is no artificial input token cap.
+// The 8,000 token limit applies to API *output*, not input. Keeping for reference.
+export const DIRECT_ANALYSIS_TOKEN_THRESHOLD = 8000;
 
 export const ALLOWED_MIME_TYPES = [
   "application/pdf",
@@ -232,12 +234,11 @@ export function estimateTokens(text: string): number {
  * Truncates text to fit within the fallback model's maximum token budget.
  *
  * If the text is within the limit, returns it unchanged.
- * If it exceeds the limit, slices to exactly FALLBACK_MODEL_TOKEN_LIMIT * CHARS_PER_TOKEN
- * characters from the beginning, discarding the rest.
+/**
+ * DORMANT — No longer used in production. There is no artificial input token cap.
  *
- * Note: This is a last-resort safety net. The preferred approach for large
- * documents is chunked or summarize-then-analyze strategies, which preserve
- * all content.
+ * Previously truncated text to fit within an assumed input token limit.
+ * Kept for test compatibility and reference.
  *
  * @param text - The text to potentially truncate.
  * @returns The original text if within limit, or a truncated version.
@@ -245,11 +246,11 @@ export function estimateTokens(text: string): number {
 export function truncateToTokenLimit(text: string): string {
   const tokens = estimateTokens(text);
 
-  if (tokens <= MODEL_TOKEN_LIMIT_NON_STREAMING) {
+  if (tokens <= DIRECT_ANALYSIS_TOKEN_THRESHOLD) {
     return text;
   }
 
-  const maxChars = MODEL_TOKEN_LIMIT_NON_STREAMING * CHARS_PER_TOKEN;
+  const maxChars = DIRECT_ANALYSIS_TOKEN_THRESHOLD * CHARS_PER_TOKEN;
   return text.slice(0, maxChars);
 }
 

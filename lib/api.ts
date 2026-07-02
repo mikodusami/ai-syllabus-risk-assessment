@@ -21,7 +21,6 @@ For each issue you find, explain:
 Respond with a JSON object in this exact format:
 {
   "course": "Course name extracted from syllabus",
-  "riskLevel": <number 0-100>,
   "issues": [
     {
       "title": "Short, clear title",
@@ -33,13 +32,6 @@ Respond with a JSON object in this exact format:
   "summary": "3-4 sentences: overall findings, what's already working, and the most important change to make"
 }
 
-riskLevel scoring guide (0-100):
-- 0-19: Minimal risk. Assessments are primarily proctored, in-person, or use formats inherently resistant to AI.
-- 20-39: Low risk. Most assessments are AI-resistant with only minor vulnerabilities.
-- 40-59: Moderate risk. A mix of AI-vulnerable and AI-resistant assessments; some changes recommended.
-- 60-79: Elevated risk. Multiple major assessments are vulnerable to AI misuse without detection.
-- 80-100: Critical risk. Most or all assessments can be completed with AI, with little to no safeguards in place.
-
 Specific rules to always check:
 1. If the syllabus includes unproctored take-home quizzes or exams, flag them. Recommend replacing with in-person, proctored alternatives if they are meant to demonstrate learning.
 2. If presentations are assigned, check whether substantial Q&A time is included. If not, flag that presenters may just be regurgitating AI-generated content without internalizing the material.
@@ -47,6 +39,10 @@ Specific rules to always check:
 Respond ONLY with valid JSON. No markdown, no code fences, no extra text.
 `;
 
+// --- DORMANT ---
+// The summarize extraction prompt is used by the summarize strategy, which is
+// currently disabled. It loses risk-relevant context (proctoring status, drop
+// policies, attempt limits) during extraction, producing under-scored results.
 const SUMMARIZE_EXTRACT_PROMPT = `
 You are a syllabus content extractor. You will receive a portion of a university syllabus.
 Extract ONLY the assignments, assessments, presentations, grading criteria, and evaluation methods.
@@ -60,6 +56,9 @@ Return a concise bullet-point list of every assignment/assessment found, includi
 Be thorough but concise. Do not add commentary. Just list the facts.
 `;
 
+// --- DORMANT ---
+// The chunk analysis prompt is used by the chunked strategy, which is currently
+// disabled. Without full document context, chunks produce false positives.
 const CHUNK_ANALYSIS_PROMPT = `
 You are a university syllabus AI risk analyst. You will receive a PORTION of a syllabus.
 Analyze any assignments or assessments in this portion that may be vulnerable to generative AI misuse.
@@ -82,6 +81,11 @@ Otherwise respond with a JSON object:
 Respond ONLY with valid JSON. No markdown, no code fences, no extra text.
 `;
 
+// --- DORMANT ---
+// The merge prompt is used by the chunked analysis strategy, which is currently
+// disabled. Chunked analysis splits context and can produce false positives because
+// the model doesn't see mitigating policies from other sections. Keeping this for
+// reference in case the strategy is revisited with improvements.
 const MERGE_PROMPT = `
 You are a university syllabus AI risk analyst. You will receive a collection of issues found across different sections of a syllabus.
 Your job is to deduplicate, merge, and produce a final cohesive analysis.
@@ -89,7 +93,6 @@ Your job is to deduplicate, merge, and produce a final cohesive analysis.
 Respond with a JSON object in this exact format:
 {
   "course": "Course name (infer from context or use 'Unknown Course')",
-  "riskLevel": <number 0-100>,
   "issues": [
     {
       "title": "Short, clear title",
@@ -100,13 +103,6 @@ Respond with a JSON object in this exact format:
   ],
   "summary": "3-4 sentences: overall findings, what's already working, and the most important change to make"
 }
-
-riskLevel scoring guide (0-100):
-- 0-19: Minimal risk. Assessments are primarily proctored, in-person, or use formats inherently resistant to AI.
-- 20-39: Low risk. Most assessments are AI-resistant with only minor vulnerabilities.
-- 40-59: Moderate risk. A mix of AI-vulnerable and AI-resistant assessments; some changes recommended.
-- 60-79: Elevated risk. Multiple major assessments are vulnerable to AI misuse without detection.
-- 80-100: Critical risk. Most or all assessments can be completed with AI, with little to no safeguards in place.
 
 Respond ONLY with valid JSON. No markdown, no code fences, no extra text.
 `;
@@ -185,6 +181,8 @@ export async function analyzeDirect(
 }
 
 /**
+ * DORMANT — Not currently used. All analysis uses analyzeDirect.
+ *
  * Analyzes a large syllabus by splitting it into token-safe chunks.
  *
  * Strategy:
@@ -259,6 +257,8 @@ export async function analyzeChunked(
 }
 
 /**
+ * DORMANT — Not currently used. All analysis uses analyzeDirect.
+ *
  * Analyzes a large syllabus by first extracting assignments, then analyzing them.
  *
  * Strategy:

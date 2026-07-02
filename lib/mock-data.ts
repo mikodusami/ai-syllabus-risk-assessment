@@ -3,7 +3,6 @@ import type { AnalysisResult } from "./types";
 
 export const mockAnalysisLowRisk: AnalysisResult = {
   course: "AI Tool Etiquette for Teams",
-  riskLevel: 8,
   issues: [
     {
       title: "Outdated screenshot in Module 2",
@@ -20,7 +19,6 @@ export const mockAnalysisLowRisk: AnalysisResult = {
 
 export const mockAnalysisMediumRisk: AnalysisResult = {
   course: "Generative AI in the Workplace",
-  riskLevel: 54,
   issues: [
     {
       title: "No guidance on data confidentiality",
@@ -44,7 +42,6 @@ export const mockAnalysisMediumRisk: AnalysisResult = {
 
 export const mockAnalysisHighRisk: AnalysisResult = {
   course: "AI-Assisted Customer Decisioning",
-  riskLevel: 91,
   issues: [
     {
       title: "No disclosure requirement for AI-assisted decisions",

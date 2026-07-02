@@ -5,48 +5,7 @@ interface ReportProps {
   data: AnalysisResult;
 }
 
-// [threshold, meaning, color, severity]
-// riskLevel (0-100) gets matched to whichever threshold it's closest to.
-type RiskRange = [
-  threshold: number,
-  meaning: string,
-  color: string,
-  severity: "Low" | "Medium" | "High",
-];
-
-const riskLevelRangeDefinition: RiskRange[] = [
-  [0, "No risk - no notable concerns identified", "#007700", "Low"],
-  [20, "Low risk - minor items worth noting", "#4d9900", "Low"],
-  [40, "Moderate risk - some issues should be reviewed", "#cc9900", "Medium"],
-  [60, "Elevated risk - multiple issues need attention", "#cc7700", "Medium"],
-  [80, "High risk - significant issues require action", "#cc3300", "High"],
-  [100, "Critical risk - immediate review required", "#cc0000", "High"],
-];
-
-function getRiskLevelRange(riskLevel: number): RiskRange {
-  // Find the definition whose threshold is closest to riskLevel.
-  // Scans back-to-front so ties favor the higher (more severe) threshold.
-  let closest: RiskRange | null = null;
-  let minDiff = Number.MAX_VALUE;
-
-  for (let i = riskLevelRangeDefinition.length - 1; i >= 0; i--) {
-    const candidate = riskLevelRangeDefinition[i];
-    const diff = Math.abs(candidate[0] - riskLevel);
-    if (diff < minDiff) {
-      minDiff = diff;
-      closest = candidate;
-    }
-  }
-
-  return closest ?? [-1, "Risk level unknown", "#999999", "Low"];
-}
-
 export default function Report({ data }: ReportProps) {
-  const riskRange = getRiskLevelRange(data.riskLevel);
-  const riskColor = riskRange[2];
-  const riskMessage = riskRange[1];
-  const riskSeverity = riskRange[3];
-
   return (
     <div style={_styles.container}>
       <h2 style={_styles.title}>AI Risk Assessment Report</h2>
@@ -55,13 +14,6 @@ export default function Report({ data }: ReportProps) {
         <p>
           <strong>Course:</strong> {data.course}
         </p>
-        <p>
-          <strong>Overall Risk Level:</strong>{" "}
-          <span style={{ ..._styles.riskValue, color: riskColor }}>
-            {data.riskLevel}/100 — {riskSeverity}
-          </span>
-        </p>
-        <p style={{ color: riskColor }}>{riskMessage}</p>
       </div>
 
       <h3 style={_styles.sectionTitle}>Issues Found ({data.issues.length})</h3>
@@ -103,9 +55,6 @@ const _styles = {
   },
   summarySection: {
     marginBottom: "1.5rem",
-  },
-  riskValue: {
-    fontWeight: "bold",
   },
   sectionTitle: {
     fontWeight: "bold",
