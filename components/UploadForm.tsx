@@ -54,8 +54,17 @@ export default function UploadForm() {
         formData,
       );
       setResult(data);
-    } catch {
-      setResult({ success: false, error: "Network error. Please try again." });
+    } catch (err) {
+      // Axios throws on non-2xx responses. The server returns { success: false, error: "..." }
+      // in the response body for validation errors (400) and processing errors (500).
+      if (axios.isAxiosError(err) && err.response?.data?.error) {
+        setResult({ success: false, error: err.response.data.error });
+      } else {
+        setResult({
+          success: false,
+          error: "Network error. Please try again.",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
